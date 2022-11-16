@@ -10,7 +10,7 @@ pipeline {
         stage('Prepare') {
             steps {
                 // Clean workspace prior to installation
-                cleanWS()
+                cleanWS
             }
         }
         stage('Build') {
