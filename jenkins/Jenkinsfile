@@ -10,7 +10,7 @@ pipeline {
         stage('Prepare') {
             steps {
                 // Clean workspace prior to installation
-                cleanWS
+                cleanWs()
             }
         }
         stage('Build') {
@@ -38,6 +38,15 @@ pipeline {
                         echo "Docker credentials: '${SECRET}'"
                         '''
                     }
+                }
+                // Clean after every build
+                always {
+                    cleanWs(cleanWhenNotBuilt: false,
+                            deleteDirs: true,
+                            disableDeferredWipeout: true,
+                            notFailBuild: true,
+                            patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+                                       [pattern: '.propsfile', type: 'EXCLUDE']])
                 }
             }
         }
