@@ -2,11 +2,17 @@ pipeline {
     agent any
 
     tools {
-        // Install the Maven version configured as "M3" and add it to the path.
+        // Install the Maven version configured as "maven-local-3.6.3" and add it to the path.
         maven "maven-local-3.6.3"
     }
 
     stages {
+        stage('Prepare') {
+            steps {
+                // Clean workspace prior to installation
+                cleanWS()
+            }
+        }
         stage('Build') {
             steps {
                 // Get some code from a GitHub repository
@@ -23,25 +29,14 @@ pipeline {
                 // If Maven was able to run the tests, even if some of the test
                 // failed, record the test results and archive the jar file.
                 success {
-                    stage('JUnit tests') {
-                        steps {
-                            // Comment until test dependencies are resolved
-                            //junit '**/target/surefire-reports/TEST-*.xml'
-                        }
-                    }
-                    stage('Archive artifacts'){
-                        steps {
-                            archiveArtifacts 'target/*.jar'
-                        }
-                    }
-
-                    stage('Docker push') {
-                        // Docker push image to docker-hub registry
-                        steps{
-                            withCredentials([string(credentialsId: 'ff61ab9a-4aaf-46bd-955c-9025fb701738', variable: 'SECRET')]) { //set SECRET with the credential content
-                                echo "My secret text is '${SECRET}'"
-                            }
-                        }
+                    // Comment until test dependencies are resolved
+                    //junit '**/target/surefire-reports/TEST-*.xml'
+                    archiveArtifacts artifacts:'target/*.jar', fingerprint: true
+                    // Docker-hub credentials
+                    withCredentials([string(credentialsId: 'ff61ab9a-4aaf-46bd-955c-9025fb701738', variable: 'SECRET')]) { //set SECRET with the credential content
+                        sh '''
+                        echo "Docker credentials: '${SECRET}'"
+                        '''
                     }
                 }
             }
