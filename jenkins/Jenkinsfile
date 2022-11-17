@@ -8,7 +8,7 @@ pipeline {
 
     environment {
         // Set up DockerHub credentials
-        DOCKERHUB_CREDENTIALS = credentials('ff61ab9a-4aaf-46bd-955c-9025fb701738')
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub_token')
     }
 
     stages {
@@ -37,12 +37,12 @@ pipeline {
                 success {
                     // Comment until test dependencies are resolved
                     //junit '**/target/surefire-reports/TEST-*.xml'
-                    archiveArtifacts artifacts:'target/*.jar', fingerprint: true
+                    archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
                     // Docker-hub credentials
                     withDockerRegistry([credentialsId: 'dockerhub_token', url: '']) {
                         sh '''
-                        echo "Dockerhub credentials from environment: '%DOCKERHUB_CREDENTIALS%'"
-                        docker login -u %DOCKERHUB_CREDENTIALS_USR% -p %DOCKERHUB_CREDENTIALS_PSW%
+                        echo "Dockerhub credentials from environment: %DOCKERHUB_CREDENTIALS%"
+                        echo %DOCKERHUB_CREDENTIALS_PSW% | docker login -u %DOCKERHUB_CREDENTIALS_USR% --password-stdin
                         # Retag image prior to push
                         docker tag myfirstprojectspring:0.0.1-SNAPSHOT project/myfirstprojectspring:0.0.1-SNAPSHOT
                         docker push project/myfirstprojectspring:0.0.1-SNAPSHOT
