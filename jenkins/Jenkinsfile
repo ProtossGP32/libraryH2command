@@ -39,7 +39,7 @@ pipeline {
                     //junit '**/target/surefire-reports/TEST-*.xml'
                     archiveArtifacts artifacts:'target/*.jar', fingerprint: true
                     // Docker-hub credentials
-                    withDockerRegistry(credentialsId: 'ff61ab9a-4aaf-46bd-955c-9025fb701738', url: '') {
+                    withDockerRegistry([credentialsId: 'dockerhub_token', url: '']) {
                         sh '''
                         echo "Dockerhub credentials from environment: '%DOCKERHUB_CREDENTIALS%'"
                         docker login -u %DOCKERHUB_CREDENTIALS_USR% -p %DOCKERHUB_CREDENTIALS_PSW%
