@@ -41,8 +41,8 @@ pipeline {
                     // Docker-hub credentials
                     withDockerRegistry([credentialsId: 'dockerhub_token', url: '']) {
                         sh '''
-                        echo "Dockerhub credentials from environment: %DOCKERHUB_CREDENTIALS%"
-                        echo %DOCKERHUB_CREDENTIALS_PSW% | docker login -u %DOCKERHUB_CREDENTIALS_USR% --password-stdin
+                        echo "Dockerhub credentials from environment: ${DOCKERHUB_CREDENTIALS}"
+                        # echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin
                         # Retag image prior to push
                         docker tag myfirstprojectspring:0.0.1-SNAPSHOT project/myfirstprojectspring:0.0.1-SNAPSHOT
                         docker push project/myfirstprojectspring:0.0.1-SNAPSHOT
