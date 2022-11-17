@@ -41,11 +41,13 @@ pipeline {
                     // Docker-hub credentials
                     withDockerRegistry([credentialsId: 'dockerhub_token', url: '']) {
                         sh '''
+                        # Prepare image name
+                        docker_image_repo="$(echo ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops-${JOB_NAME} | tr '[:upper:]' '[:lower:]')"
                         # Retag image prior to push
-                        docker tag myfirstprojectspring:0.0.1-SNAPSHOT ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops-${JOB_NAME}:${BUILD_NUMBER}
-                        docker push ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops-${JOB_NAME}:${BUILD_NUMBER}
-                        docker tag ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops-${JOB_NAME}:${BUILD_NUMBER} ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops-${JOB_NAME}:latest
-                        docker push ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops-${JOB_NAME}:latest
+                        docker tag myfirstprojectspring:0.0.1-SNAPSHOT ${docker_image_repo}:{BUILD_NUMBER}
+                        docker push ${docker_image_repo}:${BUILD_NUMBER}
+                        docker tag ${docker_image_repo}:${BUILD_NUMBER} ${docker_image_repo}:latest
+                        docker push ${docker_image_repo}:latest
                         '''
                     }
                 }
