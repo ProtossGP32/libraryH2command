@@ -42,10 +42,10 @@ pipeline {
                     withDockerRegistry([credentialsId: 'dockerhub_token', url: '']) {
                         sh '''
                         # Retag image prior to push
-                        docker tag myfirstprojectspring:0.0.1-SNAPSHOT ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops/library-h2-command:${BUILD_NUMBER}
-                        docker push ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops/library-h2-command:${BUILD_NUMBER}
-                        docker tag ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops/library-h2-command:${BUILD_NUMBER} ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops/library-h2-command:latest
-                        docker push ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops/library-h2-command:latest
+                        docker tag myfirstprojectspring:0.0.1-SNAPSHOT ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops-${BUILD_NAME}:${BUILD_NUMBER}
+                        docker push ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops-${BUILD_NAME}:${BUILD_NUMBER}
+                        docker tag ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops-${BUILD_NAME}:${BUILD_NUMBER} ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops-${BUILD_NAME}:latest
+                        docker push ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops-${BUILD_NAME}:latest
                         '''
                     }
                 }
