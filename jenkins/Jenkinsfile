@@ -37,7 +37,7 @@ pipeline {
                 success {
                     // Comment until test dependencies are resolved
                     //junit '**/target/surefire-reports/TEST-*.xml'
-                    archiveArtifacts artifacts:'target/*.per a exposar el jar', fingerprint: true
+                    archiveArtifacts artifacts:'target/*.jar', fingerprint: true
                     // Docker-hub credentials
                     withDockerRegistry(credentialsId: 'ff61ab9a-4aaf-46bd-955c-9025fb701738', url: '') {
                         sh '''
