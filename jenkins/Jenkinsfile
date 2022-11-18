@@ -44,7 +44,7 @@ pipeline {
                         # Prepare image name
                         docker_image_repo="$(echo ${DOCKERHUB_CREDENTIALS_USR}/cifo-devops-${JOB_NAME} | tr '[:upper:]' '[:lower:]')"
                         # Retag image prior to push
-                        docker tag myfirstprojectspring:0.0.1-SNAPSHOT ${docker_image_repo}:{BUILD_NUMBER}
+                        docker tag myfirstprojectspring:0.0.1-SNAPSHOT ${docker_image_repo}:${BUILD_NUMBER}
                         docker push ${docker_image_repo}:${BUILD_NUMBER}
                         docker tag ${docker_image_repo}:${BUILD_NUMBER} ${docker_image_repo}:latest
                         docker push ${docker_image_repo}:latest
